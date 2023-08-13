@@ -1,6 +1,5 @@
 // ########################################################################################################################
 // Dashboard
-
 document.addEventListener("DOMContentLoaded", function () {
   // Display when form is opened
   if (localStorage.countNewTickets === undefined) {
@@ -54,10 +53,18 @@ document.addEventListener("DOMContentLoaded", function () {
       localStorage.totalTicketCounter;
   }
 
-  let tempProjectarr = localStorage.projectarrays.split(",");
-  if (tempProjectarr.length === 0) {
+  if (localStorage.usersArray === undefined) {
+    document.querySelector(".total-users-summary").innerHTML = 0;
+  } else {
+    let tempUsersArray = JSON.parse(localStorage.usersArray);
+    document.querySelector(".total-users-summary").innerHTML =
+      tempUsersArray.length;
+  }
+
+  if (localStorage.projectarrays === undefined) {
     document.querySelector(".total-projects-summary").innerHTML = 0;
   } else {
+    let tempProjectarr = localStorage.projectarrays.split(",");
     document.querySelector(".total-projects-summary").innerHTML =
       tempProjectarr.length;
   }
@@ -71,11 +78,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let mainprojectsArray = [];
   const addbtn = document.querySelector(".add-project-button");
-  const clearbtn = document.querySelector(".clear-project-button");
   const addprojectcontainer = document.querySelector(
     ".dynamic-project-container"
   );
-  const projectNameElement = document.getElementById("new-project-name");
+  const projectNameElement = document.querySelector(".new-project-name");
 
   if (localStorage.projectarrays) {
     mainprojectsArray = localStorage.projectarrays.split(",");
@@ -95,9 +101,105 @@ document.addEventListener("DOMContentLoaded", function () {
       projectName.value = "";
     } else alert("Please enter a project Name");
   });
+});
 
-  clearbtn.addEventListener("click", function () {
-    mainprojectsArray = [];
-    localStorage.projectarrays = mainprojectsArray;
+// #################################################################################################################################################################################
+// Users
+
+document.addEventListener("DOMContentLoaded", function () {
+  let users = [];
+
+  if (
+    localStorage.usersArray !== null &&
+    localStorage.usersArray !== undefined
+  ) {
+    users = JSON.parse(localStorage.usersArray);
+    displayUsers(users);
+  }
+});
+
+const addPerson = () => {
+  let users = [];
+
+  if (
+    localStorage.usersArray !== null &&
+    localStorage.usersArray !== undefined
+  ) {
+    users = JSON.parse(localStorage.usersArray);
+  }
+
+  let person = {
+    name: document.getElementById("name").value,
+    surname: document.getElementById("surname").value,
+    id: document.getElementById("idnumber").value,
+    email: document.getElementById("mail").value,
+    username: document.getElementById("username").value,
+  };
+
+  users.push(person);
+  displayUsers(users);
+  localStorage.usersArray = JSON.stringify(users);
+  const popupContainer = document.getElementById("popupContainer");
+  popupContainer.style.display = "none";
+};
+
+function displayUsers(users) {
+  const userList = document.getElementById("userList");
+  userList.innerHTML = "";
+
+  for (const user of users) {
+    const li = document.createElement("li");
+    li.textContent = `${user.name} ${user.surname}`;
+    userList.appendChild(li);
+  }
+}
+
+function searchUser() {
+  let users = [];
+
+  if (
+    localStorage.usersArray !== null &&
+    localStorage.usersArray !== undefined
+  ) {
+    users = JSON.parse(localStorage.usersArray);
+  }
+
+  const searchQuery = document.getElementById("search").value.toLowerCase();
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchQuery) ||
+      user.username.toLowerCase().includes(searchQuery)
+  );
+
+  displayUsers(filteredUsers);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelector(".popupUsers").addEventListener("click", function () {
+    removeHidden();
+  });
+  const removeHidden = function () {
+    document.querySelector(".input-wrapper").classList.remove("hidden");
+  };
+});
+
+const addUserButton = document.querySelector(".btn-add");
+if (addUserButton) {
+  addUserButton.addEventListener("click", addPerson);
+}
+
+// Add users form
+document.addEventListener("DOMContentLoaded", function () {
+  const openPopupButton = document.querySelector(".btn-add-user");
+  const popupContainer = document.getElementById("popupContainer");
+
+  openPopupButton.addEventListener("click", () => {
+    popupContainer.style.display = "block";
+  });
+
+  window.addEventListener("click", (event) => {
+    if (event.target === popupContainer) {
+      popupContainer.style.display = "none";
+    }
   });
 });

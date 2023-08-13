@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// ###########################################################################################################################################################################################################################################################################################################################################################################################################################
+// ##########################################################################################################################################################################################################################################################################################################################################################################################################################
 
 let globalMainCounter = 0;
 let newTicketElementArray = [];
@@ -39,6 +39,7 @@ let confirmTicketElementArray = [];
 let confirmTicketInfoArrayReal = [];
 let closeTicketInfoArray = [];
 let closeTicketElementArray = [];
+let tempUsersArray = [];
 
 let highPriorityCounter = 0;
 let mediumPriorityCounter = 0;
@@ -50,8 +51,6 @@ let countConfirmedTickets = 0;
 let countClosedTickets = 0;
 
 let ticketName, ticketDescription, ticketProject, ticketUser, ticketPriority;
-
-console.log(localStorage.totalTicketCounter);
 
 if (
   localStorage.countNewTickets != null ||
@@ -72,6 +71,10 @@ if (
   localStorage.countClosedTickets != undefined
 ) {
   countClosedTickets = localStorage.countClosedTickets;
+}
+
+if (localStorage.projectarrays === undefined) {
+  localStorage.projectarrays = [];
 }
 
 // This will display all the ticket that has been created in the pass
@@ -123,7 +126,6 @@ function increaseTicketCounter() {
     ticketCounter = Number(lStorageTicketCount);
     ticketCounter++;
     localStorage.newTicketCounter = ticketCounter;
-    console.log(ticketCounter);
     return ticketCounter;
   } else localStorage.newTicketCounter = 1;
 }
@@ -134,15 +136,22 @@ function increaseConfirmTicketCounter() {
     confirmTicketCounter = Number(lStorageTicketCount);
     confirmTicketCounter++;
     localStorage.confirmTicketCounter = confirmTicketCounter;
-    console.log(confirmTicketCounter);
     return confirmTicketCounter;
   } else localStorage.confirmTicketCounter = 1;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   const projectArray = localStorage.projectarrays.split(",");
+  if (localStorage.usersArray !== undefined) {
+    tempUsersArray = JSON.parse(localStorage.usersArray);
+  }
+
+  let usersArray = [];
+  for (let i = 0; i < tempUsersArray.length; i++) {
+    usersArray[i] = `${tempUsersArray[i].name} ${tempUsersArray[i].surname}`;
+  }
   addProjectToDropdown(projectArray);
-  addUserToDropdown(projectArray);
+  addUserToDropdown(usersArray);
 });
 
 // This function gets the newly created ticket info from the user
@@ -155,32 +164,42 @@ function getNewTicketInfo() {
     'input[name="priority"]:checked'
   ).value;
 
-  // This creates an object and stores the current information in it so that we can access it for the confirm fucntion
-  let newTicketArray = [
-    (Name = ticketName),
-    (Description = ticketDescription),
-    (Project = ticketProject),
-    (User = ticketUser),
-    (Priority = ticketPriority),
-  ];
-
   if (
-    localStorage.newTicketInfo != null ||
-    localStorage.newTicketInfo != undefined
+    ticketName != "" &&
+    ticketDescription != "" &&
+    ticketProject != "" &&
+    ticketUser != ""
   ) {
-    confirmTicketInfoArray = JSON.parse(localStorage.newTicketInfo);
-  }
-  confirmTicketInfoArray.push(newTicketArray);
-  localStorage.newTicketInfo = JSON.stringify(confirmTicketInfoArray);
+    increaseTicketCounter();
+    // This creates an object and stores the current information in it so that we can access it for the confirm fucntion
+    let newTicketArray = [
+      (Name = ticketName),
+      (Description = ticketDescription),
+      (Project = ticketProject),
+      (User = ticketUser),
+      (Priority = ticketPriority),
+    ];
 
-  // This calls the createTicketElement function to display the newticket
-  createTicketElement(
-    ticketName,
-    ticketDescription,
-    ticketProject,
-    ticketUser,
-    ticketPriority
-  );
+    if (
+      localStorage.newTicketInfo != null ||
+      localStorage.newTicketInfo != undefined
+    ) {
+      confirmTicketInfoArray = JSON.parse(localStorage.newTicketInfo);
+    }
+    confirmTicketInfoArray.push(newTicketArray);
+    localStorage.newTicketInfo = JSON.stringify(confirmTicketInfoArray);
+
+    // This calls the createTicketElement function to display the newticket
+    createTicketElement(
+      ticketName,
+      ticketDescription,
+      ticketProject,
+      ticketUser,
+      ticketPriority
+    );
+  } else {
+    alert("Please make sure that all fields are entered");
+  }
 }
 
 // This will add the projects from the project array to the dropdown box
@@ -216,29 +235,31 @@ function createTicketElement(name, description, project, user, priority) {
   const elementString = `
   <div class="newTicket-element newTicket-element${localStorage.newTicketCounter}">
     <div class="Ticket-name-description" id="newTicket${localStorage.newTicketCounter}">
-      <div class="Ticket-name" id="newTicket-name${localStorage.newTicketCounter}">
-        <h4 class="Ticket-name-heading" id="newTicket-name-heading${localStorage.newTicketCounter}">${name}</h4>
+      <div class="Ticket-name background-shadow" id="newTicket-name${localStorage.newTicketCounter}">
+        <h4 class="Ticket-name-heading " id="newTicket-name-heading${localStorage.newTicketCounter}">${name}</h4>
       </div>
-      <div class="Ticket-description" id="newTicket-description${localStorage.newTicketCounter}">
+      <div class="Ticket-description background-shadow" id="newTicket-description${localStorage.newTicketCounter}">
         <p class="Ticket-description-paragraph" id="newTicket-description-paragraph${localStorage.newTicketCounter}">${description}</p>
       </div>
     </div>
       <div class="Ticket-info" id="newTicket-info${localStorage.newTicketCounter}">
-        <div class="Ticket-info-project" id="newTicket-info-project${localStorage.newTicketCounter}">
+      <div class="project-user-container">
+      <div class="Ticket-info-project background-shadow" id="newTicket-info-project${localStorage.newTicketCounter}">
           <p class="Ticket-info-project-display">${project}</p>
         </div>
-        <div class="Ticket-info-user" id="newTicket-info-user${localStorage.newTicketCounter}">
+        <div class="Ticket-info-user background-shadow" id="newTicket-info-user${localStorage.newTicketCounter}">
           <p class="Ticket-info-user-display">${user}</p>
         </div>
-        <div class="Ticket-info-priority" id="newTicket-info-priority${localStorage.newTicketCounter}">
+        <div class="Ticket-info-priority background-shadow" id="newTicket-info-priority${localStorage.newTicketCounter}">
           <p class="Ticket-info-priority-display">${priority}</p>
         </div>
+      </div>                
       </div>
       <div class="Ticket-action" id="newTicket-action${localStorage.newTicketCounter}">
-        <button onclick="moveToConfirmed(${localStorage.newTicketCounter})" class="Ticket-action-confirm newTicket-action-confirm${localStorage.newTicketCounter}">
+        <button onclick="moveToConfirmed(${localStorage.newTicketCounter})" class="Ticket-action-confirm background-shadow newTicket-action-confirm${localStorage.newTicketCounter}">
           Confirm Ticket
         </button>
-        <button onclick="moveToClosed(${localStorage.newTicketCounter})" class="Ticket-action-close newTicket-action-close${localStorage.newTicketCounter}">
+        <button onclick="moveToClosed(${localStorage.newTicketCounter})" class="Ticket-action-close background-shadow newTicket-action-close${localStorage.newTicketCounter}">
           Close Ticket
         </button>
       </div>
@@ -346,27 +367,29 @@ const moveToConfirmed = function (ticketNum) {
   const confirmstring = `
   <div class="confirm-element confirm-element${confirmTicketCounter}">
     <div class="Ticket-name-description" id="newTicket${confirmTicketCounter}">
-      <div class="Ticket-name" id="confirm-name${confirmTicketCounter}">
+      <div class="Ticket-name background-shadow" id="confirm-name${confirmTicketCounter}">
         <h4 class="Ticket-name-heading" id="confirm-name-heading${confirmTicketCounter}">${name}</h4>
       </div>
-      <div class="Ticket-description" id="confirm-description${confirmTicketCounter}">
+      <div class="Ticket-description background-shadow" id="confirm-description${confirmTicketCounter}">
         <p class="Ticket-description-paragraph" id="confirm-description-paragraph${confirmTicketCounter}">${description}</p>
       </div>
     </div>
     <div class="Ticket-info" id="confirm-info${confirmTicketCounter}">
-      <div class="Ticket-info-project" id="confirm-info-project${confirmTicketCounter}">
-        <p class="Ticket-info-project-display">${project}</p>
-      </div>
-      <div class="Ticket-info-user" id="confirm-info-user${confirmTicketCounter}">
-        <p class="Ticket-info-user-display">${user}</p>
-      </div>
-      <div class="Ticket-info-priority" id="confirm-info-priority${confirmTicketCounter}">
+    <div class="project-user-container">
+    <div class="Ticket-info-project background-shadow" id="confirm-info-project${confirmTicketCounter}">
+      <p class="Ticket-info-project-display">${project}</p>
+    </div>
+    <div class="Ticket-info-user background-shadow" id="confirm-info-user${confirmTicketCounter}">
+      <p class="Ticket-info-user-display">${user}</p>
+    </div>
+    <div class="Ticket-info-priority background-shadow" id="confirm-info-priority${confirmTicketCounter}">
         <p class="Ticket-info-priority-display">${priority}</p>
       </div>
+    </div>           
     </div>
     <div class="Ticket-action" id="confirm-action${confirmTicketCounter}">
       
-      <button onclick="moveToClosed(${confirmTicketCounter})" class="Ticket-action-close newTicket-action-close${confirmTicketCounter}">
+      <button onclick="moveToClosed(${confirmTicketCounter})" class="Ticket-action-close background-shadow newTicket-action-close${confirmTicketCounter}">
         Close Ticket
       </button>
     </div>
@@ -395,9 +418,7 @@ const moveToConfirmed = function (ticketNum) {
 
   // This stores the newTicketElement array in a temporary array for the selected element to be removed
   let deletearr = localStorage.newTicketElements.split(",");
-  console.log("#####################################################");
   deletearr.splice(ticketNum - 1, 1, "");
-  console.log(deletearr);
   localStorage.newTicketElements = deletearr.join(",");
 
   // This removes the selected element(as indicated by the confirm button's ID) from the new-ticket-flexbox
@@ -438,23 +459,25 @@ const moveToClosed = function (ticketNum) {
   const closedString = `
   <div class="closed-element closed-element${ticketNum}">
     <div class="Ticket-name-description" id="newTicket${localStorage.ticketCounter}">
-      <div class="Ticket-name" id="confirm-name${ticketNum}">
+      <div class="Ticket-name background-shadow" id="confirm-name${ticketNum}">
         <h4 class="Ticket-name-heading" id="closed-name-heading${ticketNum}">${name}</h4>
       </div>
-      <div class="Ticket-description" id="closed-description${ticketNum}">
+      <div class="Ticket-description background-shadow" id="closed-description${ticketNum}">
         <p class="Ticket-description-paragraph" id="closed-description-paragraph${ticketNum}">${description}</p>
       </div>
     </div>
     <div class="Ticket-info" id="closed-info${ticketNum}">
-      <div class="Ticket-info-project" id="closed-info-project${ticketNum}">
+    <div class="project-user-container">
+      <div class="Ticket-info-project background-shadow" id="closed-info-project${ticketNum}">
         <p class="Ticket-info-project-display">${project}</p>
       </div>
-      <div class="Ticket-info-user" id="closed-info-user${ticketNum}">
+      <div class="Ticket-info-user background-shadow" id="closed-info-user${ticketNum}">
         <p class="Ticket-info-user-display">${user}</p>
       </div>
-      <div class="Ticket-info-priority" id="closed-info-priority${ticketNum}">
+      <div class="Ticket-info-priority background-shadow" id="closed-info-priority${ticketNum}">
         <p class="Ticket-info-priority-display">${priority}</p>
       </div>
+    </div>            
     </div>
     <div class="Ticket-action" id="closed-action${ticketNum}">
     </div>
@@ -479,7 +502,6 @@ const moveToClosed = function (ticketNum) {
 
   // Stores the edited array in the local storage
   localStorage.closeTicketElementArray = closeTicketElementArray.join(",");
-  console.log(localStorage.closeTicketElementArray);
 
   if (arrDisplay[ticketNum - 1] != "") {
     // This stores the newTicketElement array in a temporary array for the selected element to be removed

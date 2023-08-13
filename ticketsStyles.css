@@ -29,7 +29,7 @@ html {
 
 body {
   width: 100%;
-  height: 999px;
+  height: 90vh;
   font-family: "Poppins", sans-serif;
   font-size: 0.88rem;
   user-select: none;
@@ -73,6 +73,7 @@ body {
 
 .main-body-container {
   display: flex;
+  height: 90%;
 }
 
 .material-icons-sharp {
@@ -104,7 +105,7 @@ small {
 }
 
 aside {
-  height: 100vh;
+  height: 80vh;
 }
 
 aside .sidebar {
@@ -376,7 +377,8 @@ aside .sidebar .message-count {
 .addTicket-body-cointainer {
   background-color: var(--main-background-colour);
   border-radius: 20px;
-  width: 100%;
+  width: 85%;
+  height: 90vh;
 }
 
 .ticket-header-title {
@@ -419,7 +421,7 @@ aside .sidebar .message-count {
   width: 30%;
   border-radius: 20px;
   background-color: var(--color-white);
-  height: 90%;
+  height: 72vh;
   box-shadow: 5px 5px 10px rgb(144, 140, 146);
   transition: all 0.3s ease;
 }
@@ -436,13 +438,13 @@ aside .sidebar .message-count {
 }
 
 .confirm-element {
-  background-color: var(--color-yellow);
+  background-color: var(--color-green);
   border-radius: 20px;
   margin: 5px;
 }
 
 .closed-element {
-  background-color: var(--color-green);
+  background-color: var(--maincolour1);
   border-radius: 20px;
   margin: 5px;
 }
@@ -468,9 +470,10 @@ aside .sidebar .message-count {
 .Ticket-name-heading {
   display: flex;
   justify-content: center;
-  max-height: 20px;
+  height: 20px;
   margin: 5px;
   border-radius: 10px;
+  font-size: 15px;
 }
 
 .Ticket-description {
@@ -481,7 +484,7 @@ aside .sidebar .message-count {
   overflow-y: scroll;
   width: 97.5%;
   margin: 5px;
-  background-color: azure;
+  background-color: white;
   border-radius: 10px;
 }
 
@@ -494,7 +497,7 @@ aside .sidebar .message-count {
   overflow-wrap: break-word;
   text-align: center;
   margin: 0px;
-  background-color: azure;
+  background-color: white;
   border-radius: 10px;
 }
 
@@ -505,44 +508,39 @@ aside .sidebar .message-count {
   border-radius: 10px;
 }
 
-.Ticket-info-project {
+.Ticket-info-project,
+.Ticket-info-user,
+.Ticket-info-priority {
   display: flex;
   justify-content: center;
-  max-height: 20px;
-  margin: 3px;
+  align-items: center;
+  height: 35px;
+  margin: 5px;
   background-color: white;
   border-radius: 10px;
+  width: 150px;
 }
 
 .Ticket-info-project-display {
-  max-height: 20px;
+  height: 20px;
   margin: 0px;
+  font-size: 1.5vh;
 }
 
-.Ticket-info-user {
+.project-user-container {
   display: flex;
-  justify-content: center;
-  max-height: 20px;
-  margin: 3px;
-  background-color: azure;
 }
 
 .Ticket-info-user-display {
   max-height: 20px;
   margin: 0px;
-}
-
-.Ticket-info-priority {
-  display: flex;
-  justify-content: center;
-  max-height: 20px;
-  margin: 3px;
-  background-color: azure;
+  font-size: 1.5vh;
 }
 
 .Ticket-info-priority-display {
   max-height: 20px;
   margin: 0px;
+  font-size: 1.5vh;
 }
 
 .Ticket-action {
@@ -552,11 +550,27 @@ aside .sidebar .message-count {
 }
 .Ticket-action-close {
   background-color: rgb(246, 72, 72);
-  border-radius: 20px;
 }
 
 .Ticket-action-confirm {
-  background-color: lightgreen;
+  background-color: var(--color-green);
+}
+
+.Ticket-action-close,
+.Ticket-action-confirm {
   border-radius: 20px;
+  width: 150px;
+  height: 30px;
+  font-size: 15px;
+  margin: 2%;
 }
 /* ticket */
+.background-shadow {
+  box-shadow: 2px 2px 5px rgb(36, 36, 36);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.background-shadow :hover {
+  box-shadow: none;
+}

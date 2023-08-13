@@ -48,6 +48,48 @@
         </section>
       </aside>
 
+      <!-- Add user Form -->
+      <div id="popupContainer" class="popup">
+        <div class="popup-content">
+          <div class="input-wrapper hidden">
+            <section id="user-form-container">
+              <input type="text" id="name" placeholder="Enter name" required />
+
+              <input
+                type="text"
+                id="surname"
+                placeholder="Enter surname"
+                required
+              />
+
+              <input
+                type="number"
+                id="idnumber"
+                placeholder="Enter your id number"
+                required
+              />
+
+              <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                required
+              />
+
+              <input
+                type="email"
+                id="mail"
+                placeholder="Enter your email"
+                required
+              />
+              <button type="button" class="btn btn-add" onclick="addPerson()">
+                Add User
+              </button>
+            </section>
+          </div>
+        </div>
+      </div>
+
       <main class="main-container">
         <div class="secondary-container">
           <h1 class="dashboard-header">Dashboard</h1>
@@ -60,7 +102,7 @@
               </div>
               <div class="bugs-info-container">
                 <h2 class="bugs-number" id="bugs-ready-number">110</h2>
-                <p>Total <a>Bugs ready</a></p>
+                <p>Total <a>New Tickets</a></p>
               </div>
             </div>
             <div class="bugs-info background-shadow" id="total-bugs-inprogress">
@@ -69,7 +111,7 @@
               </div>
               <div class="bugs-info-container">
                 <h2 class="bugs-number" id="bugs-in-progress-number">514</h2>
-                <p>Total <a>Bugs in progress</a></p>
+                <p>Total <a>Confrimed Tickets</a></p>
               </div>
             </div>
             <div class="bugs-info background-shadow" id="total-bugs-completed">
@@ -78,7 +120,7 @@
               </div>
               <div class="bugs-info-container">
                 <h2 class="bugs-number" id="bugs-completed-number">253</h2>
-                <p>Total <a>Bugs fixed</a></p>
+                <p>Total <a>Closed Tickets</a></p>
               </div>
             </div>
             <div id="main-logo-container" class="main-logo background-shadow">
@@ -94,14 +136,12 @@
 
               <input
                 type="text"
-                id="new-project-name"
-                placeholder="Enter Project Name for testing"
+                class="new-project-name background-shadow"
+                placeholder="Enter new project name"
               />
               <button class="add-project-button" type="button">
                 Add New Project
               </button>
-
-              <button class="clear-project-button" type="button">Clear</button>
             </div>
             <div class="priority-container background-shadow">
               <h2>Priority</h2>
@@ -144,7 +184,22 @@
               </div>
             </div>
             <div class="users-container background-shadow">
-              <h2>Users</h2>
+              <div class="users-header">
+                <h2 class="users-title">Users</h2>
+                <div class="InputContainer">
+                  <input
+                    type="text"
+                    id="search"
+                    class="input"
+                    placeholder="Search for a User"
+                    oninput="searchUser()"
+                  />
+                </div>
+                <button type="submit" class="popupUsers btn-add-user">
+                  Add Users
+                </button>
+              </div>
+              <ul id="userList"></ul>
             </div>
           </div>
         </div>
